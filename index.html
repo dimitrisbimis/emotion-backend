@@ -46,7 +46,7 @@
 
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    const socket = io();
+    const socket = io(https://emotion-backend-lpza.onrender.com);
     function sendEmotion(emotion) {
       socket.emit('emotion', emotion);
     }
