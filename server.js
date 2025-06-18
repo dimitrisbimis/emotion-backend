@@ -1,41 +1,34 @@
 const express = require('express');
 const app = express();
 const http = require('http').createServer(app);
-const io = require('socket.io')(http);
-const path = require('path');
 
-app.use(express.static('public'));
-
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'picker.html'));
+const io = require('socket.io')(http, {
+  cors: {
+    origin: "*", 
+    methods: ["GET", "POST"]
+  }
 });
 
-app.get('/visualizer', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'visualizer.html'));
-});
+app.use(express.static('public')); 
 
-let emotionCounts = {
-  Joy: 0,
-  Sadness: 0,
-  Anger: 0,
-  Love: 0,
-  Calm: 0
-};
+app.get('/ping', (req, res) => {
+  res.send('pong');
+});
 
 io.on('connection', (socket) => {
-  console.log('A user connected');
+  console.log('User connected:', socket.id);
+
   socket.on('emotion', (emotion) => {
-    if (emotionCounts.hasOwnProperty(emotion)) {
-      emotionCounts[emotion]++;
-      io.emit('emotion', emotion);
-    }
+    console.log('Emotion received:', emotion);
+    io.emit('emotion', emotion); // broadcast to all
   });
 
   socket.on('disconnect', () => {
-    console.log('A user disconnected');
+    console.log('User disconnected:', socket.id);
   });
 });
 
-http.listen(3000, () => {
-  console.log('Server is running at http://localhost:3000');
+const PORT = process.env.PORT || 3000;
+http.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
