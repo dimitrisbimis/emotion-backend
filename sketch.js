@@ -116,7 +116,7 @@ function keyPressed() {
 }
 
 function setupSocket() {
-  const socket = io();
+  const socket = io(https://emotion-backend-lpza.onrender.com);
   socket.on("emotion", (emotion) => {
     if (emotionCounts.hasOwnProperty(emotion)) {
       emotionCounts[emotion]++;
