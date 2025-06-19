@@ -17,7 +17,7 @@ app.use(express.static('public'));
 
 // Route για έλεγχο λειτουργίας του server
 app.get('/ping', (req, res) => {
-  res.send('pong'); // Επιστρέφει "pong" όταν καλείται το /ping
+  res.send('pong'); // 
 });
 
 // Όταν ένας client συνδεθεί μέσω Socket.IO
